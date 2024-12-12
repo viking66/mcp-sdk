@@ -1,4 +1,3 @@
-module MCP.Core
-    (
-    ) where
+module MCP.Core (
 
+) where

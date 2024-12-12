@@ -1,4 +1,3 @@
-module MCP.Server
-    (
-    ) where
+module MCP.Server (
 
+) where

@@ -25,8 +25,7 @@ jobs:
     - name: Test
       run: nix develop --command cabal test all
 
-    - name: Lint
+    - name: Lint and Format Check
       run: |
         nix develop --command hlint .
-        nix develop --command find . -name "*.hs" -type f -exec fourmolu -i {} \;
-        nix develop --command git diff --exit-code
+        nix develop --command find . -name "*.hs" -type f -exec fourmolu -m check {} \;

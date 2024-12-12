@@ -1,4 +1,3 @@
-module MCP.Client
-    (
-    ) where
+module MCP.Client (
 
+) where
