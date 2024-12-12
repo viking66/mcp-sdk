@@ -1,0 +1,7 @@
+packages:
+    mcp-core
+    mcp-client
+    mcp-server
+
+-- Ensure we're using GHC 9.6.6
+with-compiler: ghc-9.6.6

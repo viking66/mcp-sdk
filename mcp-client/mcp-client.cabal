@@ -1,0 +1,34 @@
+cabal-version: 3.0
+name:          mcp-client
+version:       0.1.0.0
+synopsis:      Client implementation for Model Context Protocol
+description:   Client package for the Haskell implementation of Model Context Protocol
+license:       BSD-3-Clause
+author:        Jason McCandless
+maintainer:    jason@nocsi.com
+category:      Network
+build-type:    Simple
+
+common warnings
+    ghc-options: -Wall
+
+library
+    import:           warnings
+    exposed-modules:  MCP.Client
+    build-depends:    base ^>=4.18.2.0
+                    , bluefin
+                    , mcp-core
+    hs-source-dirs:   src
+    default-language: GHC2021
+
+test-suite mcp-client-test
+    import:           warnings
+    default-language: GHC2021
+    type:            exitcode-stdio-1.0
+    hs-source-dirs:  test
+    main-is:         Spec.hs
+    build-depends:   base ^>=4.18.2.0
+                   , mcp-client
+                   , hspec
+                   , hedgehog
+    build-tool-depends: hspec-discover:hspec-discover

@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: cachix/install-nix-action@v22
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+    - uses: DeterminateSystems/magic-nix-cache-action@main
+
+    - name: Build
+      run: nix develop --command cabal build all
+
+    - name: Test
+      run: nix develop --command cabal test all
+
+    - name: Lint
+      run: |
+        nix develop --command hlint .
+        nix develop --command find . -name "*.hs" -type f -exec fourmolu -i {} \;
+        nix develop --command git diff --exit-code
