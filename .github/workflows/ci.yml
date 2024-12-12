@@ -16,6 +16,9 @@ jobs:
         nix_path: nixpkgs=channel:nixos-unstable
     - uses: DeterminateSystems/magic-nix-cache-action@main
 
+    - name: Update Cabal Index
+      run: nix develop --command cabal update
+
     - name: Build
       run: nix develop --command cabal build all
 
