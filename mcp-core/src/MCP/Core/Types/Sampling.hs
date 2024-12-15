@@ -2,17 +2,18 @@
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module MCP.Core.Types.Sampling
-    ( -- * Sampling Types
-      SamplingCapabilities(..)
-    , ModelPreferences(..)
-    , SamplingRequest(..)
-    , SamplingResponse(..)
-    , StopReason(..)
+module MCP.Core.Types.Sampling (
+    -- * Sampling Types
+    SamplingCapabilities (..),
+    ModelPreferences (..),
+    SamplingRequest (..),
+    SamplingResponse (..),
+    StopReason (..),
+
     -- * Sampling Operations
-    , CreateMessageRequest
-    , CreateMessageResponse
-    ) where
+    CreateMessageRequest,
+    CreateMessageResponse,
+) where
 
 import Data.Aeson
 import Data.Text (Text)
@@ -22,7 +23,8 @@ import GHC.Generics
 data SamplingCapabilities = SamplingCapabilities
     { supportsCreateMessage :: Bool
     , supportedModelFamilies :: [Text]
-    } deriving stock (Eq, Show, Generic)
+    }
+    deriving stock (Eq, Show, Generic)
 
 instance FromJSON SamplingCapabilities
 instance ToJSON SamplingCapabilities
@@ -33,7 +35,8 @@ data ModelPreferences = ModelPreferences
     , costPriority :: Double
     , speedPriority :: Double
     , intelligencePriority :: Double
-    } deriving stock (Eq, Show, Generic)
+    }
+    deriving stock (Eq, Show, Generic)
 
 instance FromJSON ModelPreferences
 instance ToJSON ModelPreferences
@@ -43,11 +46,12 @@ data SamplingRequest = SamplingRequest
     { requestMessages :: [PromptMessage]
     , requestModelPrefs :: Maybe ModelPreferences
     , requestSystemPrompt :: Maybe Text
-    , requestIncludeContext :: Text  -- "none", "thisServer", or "allServers"
+    , requestIncludeContext :: Text -- "none", "thisServer", or "allServers"
     , requestTemperature :: Maybe Double
     , requestMaxTokens :: Int
     , requestStopSequences :: [Text]
-    } deriving stock (Eq, Show, Generic)
+    }
+    deriving stock (Eq, Show, Generic)
 
 instance FromJSON SamplingRequest
 instance ToJSON SamplingRequest
@@ -58,7 +62,8 @@ data SamplingResponse = SamplingResponse
     , responseStopReason :: Maybe StopReason
     , responseRole :: Text
     , responseContent :: MessageContent
-    } deriving stock (Eq, Show, Generic)
+    }
+    deriving stock (Eq, Show, Generic)
 
 instance FromJSON SamplingResponse
 instance ToJSON SamplingResponse

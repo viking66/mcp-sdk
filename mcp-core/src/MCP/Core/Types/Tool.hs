@@ -2,18 +2,19 @@
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module MCP.Core.Types.Tool
-    ( -- * Tool Types
-      Tool(..)
-    , ToolCapabilities(..)
-    , ToolSchema(..)
-    , ToolResult(..)
+module MCP.Core.Types.Tool (
+    -- * Tool Types
+    Tool (..),
+    ToolCapabilities (..),
+    ToolSchema (..),
+    ToolResult (..),
+
     -- * Tool Operations
-    , ListToolsRequest
-    , ListToolsResponse
-    , CallToolRequest
-    , CallToolResponse
-    ) where
+    ListToolsRequest,
+    ListToolsResponse,
+    CallToolRequest,
+    CallToolResponse,
+) where
 
 import Data.Aeson
 import Data.Text (Text)
@@ -24,7 +25,8 @@ data Tool = Tool
     { toolName :: Text
     , toolDescription :: Maybe Text
     , toolInputSchema :: ToolSchema
-    } deriving stock (Eq, Show, Generic)
+    }
+    deriving stock (Eq, Show, Generic)
 
 instance FromJSON Tool
 instance ToJSON Tool
@@ -33,7 +35,8 @@ instance ToJSON Tool
 data ToolCapabilities = ToolCapabilities
     { supportsListTools :: Bool
     , supportsCallTool :: Bool
-    } deriving stock (Eq, Show, Generic)
+    }
+    deriving stock (Eq, Show, Generic)
 
 instance FromJSON ToolCapabilities
 instance ToJSON ToolCapabilities
@@ -49,7 +52,8 @@ instance ToJSON ToolSchema
 data ToolResult = ToolResult
     { resultContent :: [MessageContent]
     , resultIsError :: Bool
-    } deriving stock (Eq, Show, Generic)
+    }
+    deriving stock (Eq, Show, Generic)
 
 instance FromJSON ToolResult
 instance ToJSON ToolResult
@@ -57,5 +61,5 @@ instance ToJSON ToolResult
 -- Type aliases for request/response types (to be expanded)
 type ListToolsRequest = ()
 type ListToolsResponse = [Tool]
-type CallToolRequest = (Text, Value)  -- (name, arguments)
+type CallToolRequest = (Text, Value) -- (name, arguments)
 type CallToolResponse = ToolResult

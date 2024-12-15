@@ -1,20 +1,20 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module MCP.Transport.HTTP.SSE
-    ( -- * SSE Support
-      SSEConfig(..)
-    , addSSESupport
-    ) where
+module MCP.Transport.HTTP.SSE (
+    -- * SSE Support
+    SSEConfig (..),
+    addSSESupport,
+) where
 
 import Control.Concurrent.STM
 import Data.Aeson
-import Network.Wai
 import Network.HTTP.Types
+import Network.Wai
 
 -- | SSE configuration
 data SSEConfig = SSEConfig
     { eventQueue :: TQueue Value
-    , keepAliveInterval :: Int  -- microseconds
+    , keepAliveInterval :: Int -- microseconds
     }
 
 -- | Add SSE support to a WAI application
@@ -24,7 +24,8 @@ addSSESupport config app req respond
     | otherwise = app req respond
 
 -- | Handle SSE connection
-handleSSE :: SSEConfig -> (Response -> IO ResponseReceived) -> IO ResponseReceived
+handleSSE
+    :: SSEConfig -> (Response -> IO ResponseReceived) -> IO ResponseReceived
 handleSSE config respond = do
     -- Set up response stream
     let stream :: StreamingBody
@@ -38,14 +39,17 @@ handleSSE config respond = do
                 event <- atomically $ readTQueue (eventQueue config)
                 write $ "data: " <> encode event <> "\n\n"
                 flush
-                
+
                 -- Keep-alive
                 threadDelay (keepAliveInterval config)
-                write ":\n\n"  -- Comment for keep-alive
+                write ":\n\n" -- Comment for keep-alive
                 flush
 
-    respond $ responseStream status200
-        [ ("Content-Type", "text/event-stream")
-        , ("Cache-Control", "no-cache")
-        , ("Connection", "keep-alive")
-        ] stream
+    respond $
+        responseStream
+            status200
+            [ ("Content-Type", "text/event-stream")
+            , ("Cache-Control", "no-cache")
+            , ("Connection", "keep-alive")
+            ]
+            stream

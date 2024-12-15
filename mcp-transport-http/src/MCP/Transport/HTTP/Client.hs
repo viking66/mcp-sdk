@@ -1,11 +1,11 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module MCP.Transport.HTTP.Client
-    ( -- * HTTP Client
-      HTTPClient(..)
-    , ClientConfig(..)
-    , newClient
-    ) where
+module MCP.Transport.HTTP.Client (
+    -- * HTTP Client
+    HTTPClient (..),
+    ClientConfig (..),
+    newClient,
+) where
 
 import Control.Concurrent.Async
 import Control.Concurrent.STM
@@ -31,11 +31,12 @@ data HTTPClient = HTTPClient
 newClient :: ClientConfig -> MessageHandler -> ErrorHandler -> IO Connection
 newClient config onMessage onError = do
     queue <- newTQueueIO
-    
-    let client = HTTPClient
-            { config = config
-            , messageQueue = queue
-            }
+
+    let client =
+            HTTPClient
+                { config = config
+                , messageQueue = queue
+                }
 
     -- Start message processor
     processorThread <- async $ forever $ do
@@ -43,20 +44,23 @@ newClient config onMessage onError = do
         processMessage client msg
 
     -- Return connection
-    return Connection
-        { sendMessage = atomically . writeTQueue queue
-        , close = cancel processorThread
-        }
+    return
+        Connection
+            { sendMessage = atomically . writeTQueue queue
+            , close = cancel processorThread
+            }
 
 -- | Process outgoing message
 processMessage :: HTTPClient -> Value -> IO ()
 processMessage client msg = do
-    let request = defaultRequest
-            { method = "POST"
-            , path = "/message"
-            , requestBody = RequestBodyLBS $ encode msg
-            }
-            
+    let request =
+            defaultRequest
+                { method = "POST"
+                , path = "/message"
+                , requestBody = RequestBodyLBS $ encode msg
+                }
+
     response <- httpLbs request (manager $ config client)
     unless (statusIsSuccessful $ responseStatus response) $
-        throwIO $ MessageError "Failed to send message"
+        throwIO $
+            MessageError "Failed to send message"

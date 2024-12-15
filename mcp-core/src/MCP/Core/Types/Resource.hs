@@ -2,20 +2,21 @@
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module MCP.Core.Types.Resource
-    ( -- * Resource Types
-      Resource(..)
-    , ResourceCapabilities(..)
-    , ResourceContent(..)
-    , ResourceTemplate(..)
+module MCP.Core.Types.Resource (
+    -- * Resource Types
+    Resource (..),
+    ResourceCapabilities (..),
+    ResourceContent (..),
+    ResourceTemplate (..),
+
     -- * Resource Operations
-    , ListResourcesRequest
-    , ListResourcesResponse
-    , ReadResourceRequest
-    , ReadResourceResponse
-    , SubscribeRequest
-    , UnsubscribeRequest
-    ) where
+    ListResourcesRequest,
+    ListResourcesResponse,
+    ReadResourceRequest,
+    ReadResourceResponse,
+    SubscribeRequest,
+    UnsubscribeRequest,
+) where
 
 import Data.Aeson
 import Data.Text (Text)
@@ -27,7 +28,8 @@ data Resource = Resource
     , resourceName :: Text
     , resourceDescription :: Maybe Text
     , resourceMimeType :: Maybe Text
-    } deriving stock (Eq, Show, Generic)
+    }
+    deriving stock (Eq, Show, Generic)
 
 instance FromJSON Resource
 instance ToJSON Resource
@@ -37,7 +39,8 @@ data ResourceCapabilities = ResourceCapabilities
     { supportsListing :: Bool
     , supportsReading :: Bool
     , supportsSubscription :: Bool
-    } deriving stock (Eq, Show, Generic)
+    }
+    deriving stock (Eq, Show, Generic)
 
 instance FromJSON ResourceCapabilities
 instance ToJSON ResourceCapabilities
@@ -47,8 +50,9 @@ data ResourceContent = ResourceContent
     { contentUri :: Text
     , contentMimeType :: Maybe Text
     , contentText :: Maybe Text
-    , contentBlob :: Maybe Text  -- Base64 encoded binary data
-    } deriving stock (Eq, Show, Generic)
+    , contentBlob :: Maybe Text -- Base64 encoded binary data
+    }
+    deriving stock (Eq, Show, Generic)
 
 instance FromJSON ResourceContent
 instance ToJSON ResourceContent
@@ -59,7 +63,8 @@ data ResourceTemplate = ResourceTemplate
     , templateName :: Text
     , templateDescription :: Maybe Text
     , templateMimeType :: Maybe Text
-    } deriving stock (Eq, Show, Generic)
+    }
+    deriving stock (Eq, Show, Generic)
 
 instance FromJSON ResourceTemplate
 instance ToJSON ResourceTemplate
@@ -67,7 +72,7 @@ instance ToJSON ResourceTemplate
 -- Type aliases for request/response types (to be expanded)
 type ListResourcesRequest = ()
 type ListResourcesResponse = [Resource]
-type ReadResourceRequest = Text  -- URI
+type ReadResourceRequest = Text -- URI
 type ReadResourceResponse = [ResourceContent]
-type SubscribeRequest = Text  -- URI
-type UnsubscribeRequest = Text  -- URI
+type SubscribeRequest = Text -- URI
+type UnsubscribeRequest = Text -- URI

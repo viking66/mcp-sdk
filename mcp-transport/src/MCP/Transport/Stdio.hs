@@ -1,11 +1,11 @@
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module MCP.Transport.Stdio
-    ( -- * Stdio Transport
-      StdioTransport(..)
-    , newStdioTransport
-    ) where
+module MCP.Transport.Stdio (
+    -- * Stdio Transport
+    StdioTransport (..),
+    newStdioTransport,
+) where
 
 import Control.Concurrent.Async (async, cancel)
 import Control.Concurrent.STM
@@ -13,8 +13,8 @@ import Control.Exception (finally)
 import Control.Monad (forever)
 import Data.Aeson
 import Data.Text (Text)
-import qualified Data.Text as T
-import qualified Data.Text.IO as TIO
+import Data.Text qualified as T
+import Data.Text.IO qualified as TIO
 import System.IO
 
 import MCP.Transport.Types
@@ -53,7 +53,8 @@ instance Transport StdioTransport where
                 cancel writerThread
 
         -- Return connection
-        return $ Connection
-            { sendMessage = atomically . writeTQueue sendQueue
-            , close = cleanup
-            }
+        return $
+            Connection
+                { sendMessage = atomically . writeTQueue sendQueue
+                , close = cleanup
+                }

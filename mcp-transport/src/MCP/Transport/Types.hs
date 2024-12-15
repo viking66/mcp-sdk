@@ -1,18 +1,18 @@
-{-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DerivingStrategies #-}
 
-module MCP.Transport.Types
-    ( -- * Transport Types
-      Transport(..)
-    , Connection(..)
-    , TransportError(..)
-    , MessageHandler
-    , ErrorHandler
-    ) where
+module MCP.Transport.Types (
+    -- * Transport Types
+    Transport (..),
+    Connection (..),
+    TransportError (..),
+    MessageHandler,
+    ErrorHandler,
+) where
 
-import Data.Text (Text)
-import Data.Aeson (Value)
 import Control.Exception (Exception)
+import Data.Aeson (Value)
+import Data.Text (Text)
 import GHC.Generics
 
 -- | Handler for receiving messages
