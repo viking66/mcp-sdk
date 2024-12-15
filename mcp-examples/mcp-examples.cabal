@@ -1,0 +1,45 @@
+cabal-version: 3.0
+name:          mcp-examples
+version:       0.1.0.0
+synopsis:      Example implementations using the MCP SDK
+description:   Example servers and clients using the Haskell MCP SDK
+license:       BSD-3-Clause
+author:        Jason McCandless
+maintainer:    jason@nocsi.com
+category:      Network
+build-type:    Simple
+
+common warnings
+    ghc-options: -Wall
+
+library
+    import:           warnings
+    exposed-modules:  MCP.Examples.SimpleServer
+                   , MCP.Examples.FileServer
+                   , MCP.Examples.Client
+    build-depends:    base ^>=4.18.2.0
+                   , mcp-core
+                   , mcp-client
+                   , mcp-server
+                   , mcp-transport
+                   , directory
+                   , filepath
+                   , text
+    hs-source-dirs:   src
+    default-language: GHC2021
+
+executable simple-server
+    import:           warnings
+    main-is:         SimpleServer.hs
+    build-depends:   base ^>=4.18.2.0
+                   , mcp-examples
+    hs-source-dirs:  app
+    default-language: GHC2021
+
+executable file-server
+    import:           warnings
+    main-is:         FileServer.hs
+    build-depends:   base ^>=4.18.2.0
+                   , mcp-examples
+    hs-source-dirs:  app
+    default-language: GHC2021

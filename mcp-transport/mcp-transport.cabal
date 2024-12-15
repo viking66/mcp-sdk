@@ -1,0 +1,44 @@
+cabal-version: 3.0
+name:          mcp-transport
+version:       0.1.0.0
+synopsis:      Transport implementations for Model Context Protocol
+description:   Base transport implementations for the Haskell MCP SDK
+license:       BSD-3-Clause
+author:        Jason McCandless
+maintainer:    jason@nocsi.com
+category:      Network
+build-type:    Simple
+
+common warnings
+    ghc-options: -Wall
+
+library
+    import:           warnings
+    exposed-modules:  MCP.Transport
+                   , MCP.Transport.Stdio
+                   , MCP.Transport.Types
+    build-depends:    base ^>=4.18.2.0
+                   , mcp-core
+                   , async
+                   , bluefin
+                   , bytestring
+                   , mtl
+                   , stm
+                   , text
+    hs-source-dirs:   src
+    default-language: GHC2021
+
+test-suite mcp-transport-test
+    import:           warnings
+    default-language: GHC2021
+    type:            exitcode-stdio-1.0
+    hs-source-dirs:  test
+    main-is:         Spec.hs
+    other-modules:   MCP.Transport.StdioSpec
+    build-depends:   base ^>=4.18.2.0
+                   , mcp-transport
+                   , mcp-core
+                   , async
+                   , hspec
+                   , hedgehog
+    build-tool-depends: hspec-discover:hspec-discover

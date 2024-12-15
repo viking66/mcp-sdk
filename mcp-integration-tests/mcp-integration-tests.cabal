@@ -1,0 +1,37 @@
+cabal-version: 3.0
+name:          mcp-integration-tests
+version:       0.1.0.0
+synopsis:      Integration tests for MCP SDK
+description:   End-to-end and integration tests for the Haskell MCP SDK
+license:       BSD-3-Clause
+author:        Jason McCandless
+maintainer:    jason@nocsi.com
+category:      Network
+build-type:    Simple
+
+common warnings
+    ghc-options: -Wall
+
+test-suite mcp-integration-test
+    import:           warnings
+    default-language: GHC2021
+    type:            exitcode-stdio-1.0
+    hs-source-dirs:  test
+    main-is:         Spec.hs
+    other-modules:   MCP.Integration.BasicSpec
+                   , MCP.Integration.ResourcesSpec
+                   , MCP.Integration.PromptsSpec
+                   , MCP.Integration.ToolsSpec
+                   , MCP.Integration.TransportSpec
+                   , MCP.Integration.Util
+    build-depends:   base ^>=4.18.2.0
+                   , mcp-core
+                   , mcp-client
+                   , mcp-server
+                   , mcp-transport
+                   , mcp-transport-http
+                   , async
+                   , hspec
+                   , hedgehog
+                   , temporary
+    build-tool-depends: hspec-discover:hspec-discover

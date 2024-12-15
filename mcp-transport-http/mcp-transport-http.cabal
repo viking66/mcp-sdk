@@ -1,0 +1,55 @@
+cabal-version: 3.0
+name:          mcp-transport-http
+version:       0.1.0.0
+synopsis:      HTTP/SSE transport for Model Context Protocol
+description:   HTTP and Server-Sent Events transport implementation for MCP
+license:       BSD-3-Clause
+author:        Jason McCandless
+maintainer:    jason@nocsi.com
+category:      Network
+build-type:    Simple
+
+common warnings
+    ghc-options: -Wall
+
+library
+    import:           warnings
+    exposed-modules:  MCP.Transport.HTTP
+                   , MCP.Transport.HTTP.Server
+                   , MCP.Transport.HTTP.Client
+                   , MCP.Transport.HTTP.SSE
+    build-depends:    base ^>=4.18.2.0
+                   , mcp-core
+                   , mcp-transport
+                   , async
+                   , bluefin
+                   , bytestring
+                   , http-client
+                   , http-types
+                   , mtl
+                   , stm
+                   , text
+                   , wai
+                   , warp
+    hs-source-dirs:   src
+    default-language: GHC2021
+
+test-suite mcp-transport-http-test
+    import:           warnings
+    default-language: GHC2021
+    type:            exitcode-stdio-1.0
+    hs-source-dirs:  test
+    main-is:         Spec.hs
+    other-modules:   MCP.Transport.HTTP.ServerSpec
+                   , MCP.Transport.HTTP.ClientSpec
+                   , MCP.Transport.HTTP.SSESpec
+    build-depends:   base ^>=4.18.2.0
+                   , mcp-transport-http
+                   , mcp-core
+                   , mcp-transport
+                   , async
+                   , hspec
+                   , hedgehog
+                   , http-client
+                   , wai-extra
+    build-tool-depends: hspec-discover:hspec-discover
